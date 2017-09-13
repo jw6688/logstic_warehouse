@@ -15,7 +15,15 @@ public class MQSendTest {
 	public void test001(){
 		//第一个参数是queue
 		//第二个参数是内容
-		rabbitTemplate.convertAndSend("news","asd");
+		while(true){
+			rabbitTemplate.convertAndSend("news","asd");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }

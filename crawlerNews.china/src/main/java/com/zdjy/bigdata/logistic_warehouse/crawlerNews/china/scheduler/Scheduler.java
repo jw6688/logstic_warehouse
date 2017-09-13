@@ -8,12 +8,14 @@ import org.springframework.stereotype.Component;
 
 import com.zdjy.bigdata.logistic_warehouse.crawlerNews.china.crawler.Crawler;
 import com.zdjy.bigdata.logistic_warehouse.crawlerNews.china.entity.News;
+import com.zdjy.bigdata.logistic_warehouse.crawlerNews.china.mq.Sender;
 
 @Component
 public class Scheduler {
 	@Autowired
 	private Crawler crawler;
-	
+	@Autowired
+	private Sender sender;
 	@Scheduled(cron="0/30 * * * * ?")
 	public void schedule(){
 		//爬去互联网上的数据
@@ -21,8 +23,7 @@ public class Scheduler {
 		if(crawle==null||crawle.size()==0)
 			return;
 		for(News news:crawle){
-			//发送rabbitMQ
-//			System.out.println(news);
+			sender.send(news.toString());
 		}
 		System.out.println(crawle.size());
 	}
